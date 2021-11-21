@@ -29,6 +29,7 @@ public class ListController {
         columnChoices.put("positionType", "Position Type");
         columnChoices.put("coreCompetency", "Skill");
 
+        tableChoices.put("all", "View All");  //<!-- #2: Complete the View Jobs By Category Table. -->
         tableChoices.put("employer", JobData.getAllEmployers());
         tableChoices.put("location", JobData.getAllLocations());
         tableChoices.put("positionType", JobData.getAllPositionTypes());
@@ -36,9 +37,10 @@ public class ListController {
     }
 
     @GetMapping(value = "")
-    public String list(Model model) {
+    public String list(Model model) {  //handler method renders a view that displays a table of clickable links for the different job categories (obtains data by implementing JobData class methods)
         model.addAttribute("columns", columnChoices);
         model.addAttribute("tableChoices", tableChoices);
+        model.addAttribute("all", JobData.getAll());
         model.addAttribute("employers", JobData.getAllEmployers());
         model.addAttribute("locations", JobData.getAllLocations());
         model.addAttribute("positions", JobData.getAllPositionTypes());
@@ -48,7 +50,7 @@ public class ListController {
     }
 
     @GetMapping(value = "jobs")
-    public String listJobsByColumnAndValue(Model model, @RequestParam String column, @RequestParam(required = false) String value) {
+    public String listJobsByColumnAndValue(Model model, @RequestParam String column, @RequestParam(required = false) String value) {  //handler method renders a different view that displays information for the jobs that relate to a selected category (obtains data by implementing JobData class methods)
         ArrayList<Job> jobs;
         if (column.equals("all")){
             jobs = JobData.findAll();
